@@ -6,14 +6,15 @@ const cors = require("cors");
 require("dotenv").config();
 
 const connection = require("./dbConfig");
+const userRouter = require("./routers/user");
 
-connection.connect((err) => {
-  if (err) {
-    console.error("Error connecting to the database:", err.stack);
-    return;
-  }
-  console.log("Connected to the database as id " + connection.threadId);
-});
+// connection.connect((err) => {
+//   if (err) {
+//     console.error("Error connecting to the database:", err.stack);
+//     return;
+//   }
+//   console.log("Connected to the database as id " + connection.threadId);
+// });
 
 const app = express();
 
@@ -42,12 +43,10 @@ app.use(
   })
 );
 
-app.use(logger("tiny"));
+app.use(logger("dev"));
 
-app.get("/test", (req, res) => {
-  res.send("<h1>Hi</h1>");
-});
-
+// Routers
+app.use("/users", userRouter);
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
