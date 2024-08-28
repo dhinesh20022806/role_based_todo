@@ -5,6 +5,16 @@ const helmet = require("helmet");
 const cors = require("cors");
 require("dotenv").config();
 
+const connection = require("./dbConfig");
+
+connection.connect((err) => {
+  if (err) {
+    console.error("Error connecting to the database:", err.stack);
+    return;
+  }
+  console.log("Connected to the database as id " + connection.threadId);
+});
+
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
