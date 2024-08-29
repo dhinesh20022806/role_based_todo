@@ -2,18 +2,14 @@ const pool = require("../dbConfig");
 
 exports.modelRegister = async (username, hashPassword) => {
   try {
-    const saved = await pool.query(
+    const rows = await pool.query(
       'INSERT INTO users (username, password, role ) VALUES( ?, ?, "user") RETURNING *',
       [username, hashPassword]
     );
-    console.log(saved);
 
-    if (saved[0].affectedRows == 1) return true;
-    else {
-      return false;
-    }
+    return rows;
   } catch (error) {
-    console.log(error);
+    return { message: error.message };
   }
 };
 
@@ -44,7 +40,7 @@ exports.modelUser = async (userId) => {
 exports.modelAllUser = async () => {
   try {
     const rows = await pool.query(
-      "SELECT id, username, email, role, is_active FROM users WHERE role= user;"
+      "SELECT id, username, email, role, is_active FROM users WHERE role= 'user';"
     );
     return rows[0];
   } catch (error) {
@@ -55,7 +51,7 @@ exports.modelAllUser = async () => {
 exports.modelUser = async (manager_id) => {
   try {
     const rows = await pool.query(
-      "SELECT id, username, email, role, is_active FROM users WHERE role= user and id= ?;",
+      "SELECT id, username, email, role, is_active FROM users WHERE role= 'user' and id= ?;",
       [manager_id]
     );
     return rows[0];
@@ -67,7 +63,7 @@ exports.modelUser = async (manager_id) => {
 exports.modelAllManager = async () => {
   try {
     const rows = await pool.query(
-      "SELECT id, username, email, role, is_active FROM users WHERE role=manager;"
+      "SELECT id, username, email, role, is_active FROM users WHERE role='manager';"
     );
     return rows[0];
   } catch (error) {
@@ -78,7 +74,7 @@ exports.modelAllManager = async () => {
 exports.modelAllAdmin = async () => {
   try {
     const rows = await pool.query(
-      "SELECT id, username, email, role, is_active FROM users WHERE role=admin;"
+      "SELECT id, username, email, role, is_active FROM users WHERE role='admin';"
     );
     return rows[0];
   } catch (error) {
@@ -89,7 +85,7 @@ exports.modelAllAdmin = async () => {
 exports.modelAdmin = async (admin_id) => {
   try {
     const rows = await pool.query(
-      "SELECT id, username, email, role, is_active FROM users WHERE role=admin and id= ?;",
+      "SELECT id, username, email, role, is_active FROM users WHERE role='admin' and id= ?;",
       [admin_id]
     );
     return rows[0];
@@ -101,7 +97,7 @@ exports.modelAdmin = async (admin_id) => {
 exports.modelUpdateUser = async (user_id, username, eamil) => {
   try {
     const rows = await pool.query(
-      "UPDATE  users SET username = ? , eamil = ? WHERE role=user and id= ? ",
+      "UPDATE  users SET username = ? , eamil = ? WHERE role='user' and id= ? ",
       [username, eamil, user_id]
     );
     if (rows[0].affectedRows == 1) return true;
@@ -121,7 +117,7 @@ exports.modelUpdateAdmin = async (
 ) => {
   try {
     const rows = await pool.query(
-      "UPDATE  users SET username = ? , eamil = ?, role = ?, is_active = ? WHERE role=admin and id= ? ",
+      "UPDATE  users SET username = ? , eamil = ?, role = ?, is_active = ? WHERE role='admin' and id= ? ",
       [username, eamil, role, is_active, admin_id]
     );
     if (rows[0].affectedRows == 1) return true;
@@ -136,7 +132,7 @@ exports.modelUpdateAdmin = async (
 exports.modelUpdateManager = async (manager_id, username, eamil) => {
   try {
     const rows = await pool.query(
-      "UPDATE  users SET username = ? , eamil = ? WHERE role=manager and id= ? ",
+      "UPDATE  users SET username = ? , eamil = ? WHERE role='manager' and id= ? ",
       [username, eamil, manager_id]
     );
     if (rows[0].affectedRows == 1) return true;
@@ -165,7 +161,7 @@ exports.modelDeleteUser = async (user_id) => {
 exports.modelDeleteAdmin = async (admin_id) => {
   try {
     const rows = await pool.query(
-      "DELETE FROM TABLE users WHERE  role=admin and id = ?",
+      "DELETE FROM TABLE users WHERE  role='admin' and id = ?",
       [admin_id]
     );
     if (rows[0].affectedRows == 1) return true;
@@ -180,7 +176,7 @@ exports.modelDeleteAdmin = async (admin_id) => {
 exports.modelDeleteManager = async (manager_id) => {
   try {
     const rows = await pool.query(
-      "DELETE FROM TABLE users WHERE  role=manager and id = ?",
+      "DELETE FROM TABLE users WHERE  role='manager' and id = ?",
       [manager_id]
     );
     if (rows[0].affectedRows == 1) return true;
@@ -210,7 +206,7 @@ exports.modelUserByManager = async (manager_id, username, is_active) => {
 exports.modelUserByAdmin = async (admin_id, username, role, is_active) => {
   try {
     const rows = await pool.query(
-      "UPDATE users SET role = ?, is_active = ? WHERE role=user and  username = ?",
+      "UPDATE users SET role = ?, is_active = ? WHERE role='user' and  username = ?",
       [role, is_active, username]
     );
     if (rows[0].affectedRows == 1) return true;
@@ -225,7 +221,7 @@ exports.modelUserByAdmin = async (admin_id, username, role, is_active) => {
 exports.modelManagerByAdmin = async (admin_id, username, role, is_active) => {
   try {
     const rows = await pool.query(
-      "UPDATE users SET role = ?, is_active = ? WHERE role=manager and  username = ?",
+      "UPDATE users SET role = ?, is_active = ? WHERE role='manager' and  username = ?",
       [role, is_active, username]
     );
     if (rows[0].affectedRows == 1) return true;

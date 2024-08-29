@@ -18,13 +18,13 @@ const authenticateJWT = (req, res, next) => {
   });
 };
 
-exports.loginUser = (id, userRole) => {
+const loginJWTUser = (id, userRole) => {
   // Authenticate user (details omitted)
 
-  const user = { id: userId, role: userRole }; // Assuming you get this from your DB
-  const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "1h" });
+  const user = { id, role: userRole }; // Assuming you get this from your DB
+  const token = jwt.sign(user, "secert", { expiresIn: "1h" });
 
   return token;
 };
 
-module.exports = authenticateJWT;
+module.exports = { authenticateJWT, loginJWTUser };

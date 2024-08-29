@@ -14,8 +14,13 @@ const {
   deleteManager,
   updateAdmin,
   updateManagerByAdmin,
+  updateUserByAdmin,
+  updateManager,
+  updateUserByManager,
 } = require("../controllers/user");
-const authenticateJWT = require("../controllers/authController");
+const { authenticateJWT } = require("../controllers/authController");
+const validateAdmin = require("../controllers/validAdmin");
+const validateManager = require("../controllers/validManager");
 
 const router = express.Router();
 
@@ -28,23 +33,23 @@ router
   .put(authenticateJWT, updateUser)
   .delete(authenticateJWT, deleteUser);
 
-router.get("/", getAllUser);
-router.get("/admins", getAllAdmin);
+router.get("/", authenticateJWT, validateAdmin, getAllUser);
+router.get("/admins", authenticateJWT, validateAdmin, getAllAdmin);
 
 router
   .route("/admins/:adminid")
-  .get(getAdmin)
-  .put(updateAdmin)
-  .delete(deleteAdmin)
-  .put(updateUserbyAdmin)
-  .put(updateManagerByAdmin);
+  .get(authenticateJWT, validateAdmin, getAdmin)
+  .put(authenticateJWT, validateAdmin, updateAdmin)
+  .delete(authenticateJWT, validateAdmin, deleteAdmin)
+  .put(authenticateJWT, validateAdmin, updateUserByAdmin)
+  .put(authenticateJWT, validateAdmin, updateManagerByAdmin);
 
 router.get("/managers", getAllManager);
 router
   .route("/managers/:managerid")
-  .get(getManager)
-  .put(updateManager)
-  .delete(deleteManager)
-  .put(updateUserByManager);
+  .get(authenticateJWT, validateManager, getManager)
+  .put(authenticateJWT, validateManager, updateManager)
+  .delete(authenticateJWT, validateManager, deleteManager)
+  .put(authenticateJWT, validateManager, updateUserByManager);
 
 module.exports = router;
