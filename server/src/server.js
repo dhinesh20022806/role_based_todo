@@ -5,8 +5,8 @@ const helmet = require("helmet");
 const cors = require("cors");
 require("dotenv").config();
 
-const connection = require("./dbConfig");
 const userRouter = require("./routers/user");
+const taskRouter = require("./routers/task");
 
 // connection.connect((err) => {
 //   if (err) {
@@ -47,6 +47,7 @@ app.use(logger("dev"));
 
 // Routers
 app.use("/users", userRouter);
+app.use("/tasks", taskRouter);
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });

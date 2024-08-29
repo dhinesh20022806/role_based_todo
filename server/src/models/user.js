@@ -161,7 +161,7 @@ exports.modelDeleteUser = async (user_id) => {
 exports.modelDeleteAdmin = async (admin_id) => {
   try {
     const rows = await pool.query(
-      "DELETE FROM TABLE users WHERE  role='admin' and id = ?",
+      "DELETE FROM  users WHERE  role='admin' and id = ?",
       [admin_id]
     );
     if (rows[0].affectedRows == 1) return true;

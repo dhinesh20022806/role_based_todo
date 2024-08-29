@@ -32,7 +32,7 @@ exports.registerUser = async (req, res) => {
   const userSaved = await modelRegister(username, hash);
 
   if (userSaved?.length > 0 && userSaved[0].length > 0) {
-    let token = loginJWTUser(userSaved[0].id, userSaved[0].role);
+    let token = loginJWTUser(userSaved[0].username, userSaved[0].role);
     res.json(token);
   } else {
     res.json(userSaved?.message);
@@ -50,7 +50,7 @@ exports.loginUser = async (req, res) => {
   const is_valid = bcrypt.compareSync(PlaintextPassword, user_data[0].password);
 
   if (is_valid) {
-    let token = loginJWTUser(user_data[0].id, user_data[0].role);
+    let token = loginJWTUser(user_data[0].username, user_data[0].role);
     res.json(token);
   } else {
     res.json("Login Error occured!");
