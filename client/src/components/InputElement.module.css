@@ -1,6 +1,7 @@
 p.container {
   display: flex;
   flex-direction: row;
+  background-color: var(--yahoo-purple);
 }
 p.container > * {
   flex: 1;

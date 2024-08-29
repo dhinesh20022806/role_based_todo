@@ -1,6 +1,8 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Admin, Error, Login, Manager, Register, Users } from "./pages";
 import { action as LoginAction } from "./pages/Login";
+import UserRootLayout from "./pages/UserRootLayout";
+import SingleTask from "./components/SingleTask";
 
 const router = createBrowserRouter([
   {
@@ -19,17 +21,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/users",
-    element: <Users />,
+    element: <UserRootLayout />,
     children: [
       {
-        path: "tasks",
-        element: <h1>user task</h1>,
-        children: [
-          {
-            path: ":taskId",
-            element: <h1>user task id</h1>,
-          },
-        ],
+        index: true,
+        element: <Users />,
       },
     ],
   },
