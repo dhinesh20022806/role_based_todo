@@ -1,0 +1,13 @@
+.link {
+  color: var(--off-white);
+  text-decoration: none;
+}
+
+.text-white {
+  color: var(--off-white);
+}
+
+.loginform {
+  display: flex;
+  flex-direction: column;
+}

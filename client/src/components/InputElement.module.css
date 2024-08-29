@@ -1,0 +1,12 @@
+p.container {
+  display: flex;
+  flex-direction: row;
+}
+p.container > * {
+  flex: 1;
+  color: var(--off-white);
+}
+
+p.container > input {
+  color: var(--matta-black);
+}

@@ -1,0 +1,6 @@
+.cla {
+  background-color: var(--yahoo-purple);
+  height: 100dvh;
+  display: grid;
+  place-content: center;
+}
