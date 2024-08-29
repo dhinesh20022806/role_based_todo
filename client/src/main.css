@@ -286,3 +286,15 @@ li {
   grid-column: 2;
   grid-row: 3;
 }
+.grid-list-userList {
+  grid-column: 2;
+  grid-row: 3;
+}
+
+.marign-bottom {
+  margin-bottom: 5px;
+}
+.btn {
+  padding: 5px;
+  border-radius: 10px;
+}

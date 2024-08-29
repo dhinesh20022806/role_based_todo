@@ -2,7 +2,10 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Admin, Error, Login, Manager, Register, Users } from "./pages";
 import { action as LoginAction } from "./pages/Login";
 import UserRootLayout from "./pages/UserRootLayout";
-import SingleTask from "./components/SingleTask";
+import NonUserRootLayout from "./pages/NonUserRootLayout";
+import AssignTask from "./components/AssignTask";
+import Profile from "./components/Profile";
+import ManageUsers from "./components/ManageUsers";
 
 const router = createBrowserRouter([
   {
@@ -27,50 +30,50 @@ const router = createBrowserRouter([
         index: true,
         element: <Users />,
       },
+      {
+        path: "profile",
+        element: <Profile />,
+      },
     ],
   },
 
   {
     path: "/manager",
-    element: <Manager />,
+    element: <NonUserRootLayout />,
     children: [
       {
-        path: "tasks",
-        element: <h1>manager task</h1>,
-        children: [
-          {
-            path: ":taskId",
-            element: <h1>manager user task id</h1>,
-          },
-        ],
+        index: true,
+        element: <Manager />,
+      },
+      {
+        path: "profile",
+        element: <Profile />,
       },
       {
         path: "assign-task",
-        element: <h1>assign-task</h1>,
+        element: <AssignTask />,
       },
     ],
   },
   {
     path: "/admin",
-    element: <Admin />,
+    element: <NonUserRootLayout />,
     children: [
       {
-        path: "tasks",
-        element: <h1>tasks</h1>,
-        children: [
-          {
-            path: ":taskId",
-            element: <h1>tasks id</h1>,
-          },
-        ],
+        index: true,
+        element: <Admin />,
+      },
+      {
+        path: "profile",
+        element: <Profile />,
       },
       {
         path: "assign-task",
-        element: <h1>assign task</h1>,
+        element: <AssignTask />,
       },
       {
-        path: "manage-user",
-        element: <h1>manage user</h1>,
+        path: "manage-users",
+        element: <ManageUsers />,
       },
     ],
   },

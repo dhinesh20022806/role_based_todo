@@ -1,19 +1,27 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink, useParams } from "react-router-dom";
 
 const SideBar = ({ items }) => {
+  const params = useParams();
+  console.log(params);
   return (
     <nav className="bg-purple w-sidebar ">
       <ul>
-        {items.map((item) => {
-          return (
-            <li key={item}>
-              <Link to="" className="nav-link">
-                {item}
-              </Link>
-            </li>
-          );
-        })}
+        <li>
+          <NavLink to="" end>
+            home
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="assign-task" end>
+            assign task
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="manage-users" end>
+            manage users
+          </NavLink>
+        </li>
       </ul>
     </nav>
   );

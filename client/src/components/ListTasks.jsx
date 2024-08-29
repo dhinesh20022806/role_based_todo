@@ -48,7 +48,7 @@ const ListTasks = () => {
     <section className="w-full">
       <h1>Your Tasks</h1>
       {datas.map((data) => {
-        return <TaskListItem data={data} />;
+        return <TaskListItem key={data.id} data={data} />;
       })}
     </section>
   );
