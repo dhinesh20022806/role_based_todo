@@ -16,23 +16,33 @@ const {
   modelDeleteUser,
   modelDeleteManager,
   modelDeleteAdmin,
+  modelUserByAdmin,
+  modelUpdateUser,
 } = require("../models/user");
 const { loginJWTUser } = require("./authController");
 
 const saltRounds = 10;
 
 exports.registerUser = async (req, res) => {
-  const { username, password: PlaintextPassword } = req.body;
+  const { username, password: PlaintextPassword, email } = req.body;
 
   console.log(username, req.body);
 
   const salt = bcrypt.genSaltSync(saltRounds);
   const hash = bcrypt.hashSync(PlaintextPassword, salt);
 
-  const userSaved = await modelRegister(username, hash);
+  const userSaved = await modelRegister(username, hash, email);
 
-  if (userSaved?.length > 0 && userSaved[0].length > 0) {
-    let token = loginJWTUser(userSaved[0].username, userSaved[0].role);
+  console.log(userSaved);
+  console.log(userSaved[0]);
+
+  if (userSaved?.length > 0) {
+    console.log(userSaved[0].username);
+    let token = loginJWTUser(
+      userSaved[0].username,
+      userSaved[0].role,
+      userSaved[0].id
+    );
     res.json(token);
   } else {
     res.json(userSaved?.message);
@@ -50,7 +60,11 @@ exports.loginUser = async (req, res) => {
   const is_valid = bcrypt.compareSync(PlaintextPassword, user_data[0].password);
 
   if (is_valid) {
-    let token = loginJWTUser(user_data[0].username, user_data[0].role);
+    let token = loginJWTUser(
+      user_data[0].username,
+      user_data[0].role,
+      user_data[0].id
+    );
     res.json(token);
   } else {
     res.json("Login Error occured!");
@@ -97,11 +111,32 @@ exports.getAdmin = async (req, res) => {
 
   res.status(200).json(user_data);
 };
+exports.updateUserByAdmin = async (req, res) => {
+  const token = req.headers.authorization.split(" ")[1];
+  console.log(token);
+  console.log("fired......");
+
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+  const { role, username } = req.body;
+
+  const is_update = await modelUserByAdmin(username, role);
+
+  if (is_update) {
+    res.status(200).json({
+      data: "successfully updated",
+    });
+  } else {
+    res.status(400).json({
+      data: "failure",
+    });
+  }
+};
 
 exports.updateUser = async (req, res) => {
   const user_id = req.params.userid;
-  const { username, eamil } = req.body;
-  const is_updated = await modelUpdateUser(user_id, username, eamil);
+  const { username } = req.body;
+  const is_updated = await modelUpdateUser(user_id, username);
 
   if (is_updated) {
     res.status(200).json({
@@ -199,29 +234,6 @@ exports.updateUserByManager = async (req, res) => {
   const is_update = await modelUpdateUserByManager(
     manager_id,
     username,
-    is_active
-  );
-
-  if (is_update) {
-    res.status(200).json({
-      data: "successfully updated",
-    });
-  } else {
-    res.status(400).json({
-      data: "failure",
-    });
-  }
-};
-
-exports.updateUserByAdmin = async (req, res) => {
-  const { username } = req.query;
-  const { role, is_active } = req.body;
-  const admin_id = req.params.adminid;
-
-  const is_update = await modelUpdateUserByAdmin(
-    admin_id,
-    username,
-    role,
     is_active
   );
 

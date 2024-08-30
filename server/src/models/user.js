@@ -1,13 +1,13 @@
 const pool = require("../dbConfig");
 
-exports.modelRegister = async (username, hashPassword) => {
+exports.modelRegister = async (username, hashPassword, email) => {
   try {
     const rows = await pool.query(
-      'INSERT INTO users (username, password, role ) VALUES( ?, ?, "user") RETURNING *',
-      [username, hashPassword]
+      'INSERT INTO users (username, password, email, role ) VALUES( ?, ?, ?, "user") RETURNING *',
+      [username, hashPassword, email]
     );
 
-    return rows;
+    return rows[0];
   } catch (error) {
     return { message: error.message };
   }
@@ -48,7 +48,7 @@ exports.modelAllUser = async () => {
   }
 };
 
-exports.modelUser = async (manager_id) => {
+exports.modelMangerUser = async (manager_id) => {
   try {
     const rows = await pool.query(
       "SELECT id, username, email, role, is_active FROM users WHERE role= 'user' and id= ?;",
@@ -94,11 +94,11 @@ exports.modelAdmin = async (admin_id) => {
   }
 };
 
-exports.modelUpdateUser = async (user_id, username, eamil) => {
+exports.modelUpdateUser = async (user_id, username) => {
   try {
     const rows = await pool.query(
-      "UPDATE  users SET username = ? , eamil = ? WHERE role='user' and id= ? ",
-      [username, eamil, user_id]
+      "UPDATE  users SET username = ?  WHERE role='user' and id= ? ",
+      [username, user_id]
     );
     if (rows[0].affectedRows == 1) return true;
     else {
@@ -203,11 +203,11 @@ exports.modelUserByManager = async (manager_id, username, is_active) => {
   }
 };
 
-exports.modelUserByAdmin = async (admin_id, username, role, is_active) => {
+exports.modelUserByAdmin = async (username, role) => {
   try {
     const rows = await pool.query(
-      "UPDATE users SET role = ?, is_active = ? WHERE role='user' and  username = ?",
-      [role, is_active, username]
+      "UPDATE users SET role = ? WHERE   username = ?",
+      [role, username]
     );
     if (rows[0].affectedRows == 1) return true;
     else {

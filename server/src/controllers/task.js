@@ -156,7 +156,7 @@ exports.assignTask = async (req, res) => {
   const username = decoded.username;
   const role = decoded.role;
 
-  const user_username = req.body;
+  const { title, description, user_username } = req.body;
 
   const newTask = await modelNewTask(
     title,

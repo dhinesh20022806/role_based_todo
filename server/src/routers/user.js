@@ -34,15 +34,16 @@ router
   .delete(authenticateJWT, deleteUser);
 
 router.get("/", authenticateJWT, validateAdmin, getAllUser);
-router.get("/admins", authenticateJWT, validateAdmin, getAllAdmin);
+router
+  .get("/admins", authenticateJWT, validateAdmin, getAllAdmin)
+  .put(authenticateJWT, validateAdmin, updateUserByAdmin)
+  .put(authenticateJWT, validateAdmin, updateManagerByAdmin);
 
 router
   .route("/admins/:adminid")
   .get(authenticateJWT, validateAdmin, getAdmin)
   .put(authenticateJWT, validateAdmin, updateAdmin)
-  .delete(authenticateJWT, validateAdmin, deleteAdmin)
-  .put(authenticateJWT, validateAdmin, updateUserByAdmin)
-  .put(authenticateJWT, validateAdmin, updateManagerByAdmin);
+  .delete(authenticateJWT, validateAdmin, deleteAdmin);
 
 router.get("/managers", getAllManager);
 router
