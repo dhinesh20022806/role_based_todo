@@ -310,3 +310,6 @@ span.taskList > * {
 .flex-one {
   flex: 1;
 }
+.overflow-scroll {
+  overflow-y: scroll;
+}

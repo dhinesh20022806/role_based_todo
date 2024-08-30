@@ -3,7 +3,7 @@ import { Admin, Error, Login, Manager, Register, Users } from "./pages";
 import { action as LoginAction } from "./pages/Login";
 import UserRootLayout from "./pages/UserRootLayout";
 import NonUserRootLayout from "./pages/NonUserRootLayout";
-import AssignTask from "./components/AssignTask";
+import AssignTask from "./pages/AssignTask";
 import Profile from "./components/Profile";
 import ManageUsers from "./components/ManageUsers";
 import { loader as TaskLoader, action as createTask } from "./pages/Users";
@@ -12,6 +12,7 @@ import {
   loader as AdminTaskLoader,
   action as AdminCreateTask,
 } from "./pages/Admin";
+import { action as RegisterAction } from "./pages/Register";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,7 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <Register />,
+    action: RegisterAction,
   },
   {
     path: "/unauthorized",

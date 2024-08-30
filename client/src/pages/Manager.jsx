@@ -15,7 +15,7 @@ const manager = () => {
         <NewTask />
       </div>
       <div className="grid-list-task">
-        <ListTasks />
+        <ListTasks data={data} />
       </div>
     </section>
   );
@@ -24,7 +24,7 @@ const manager = () => {
 export default manager;
 
 export const loader = async () => {
-  const token = JSON.parse(localStorage.getItem("token"));
+  const token = JSON.parse(localStorage.getItem("jwt_token"));
 
   let config = {
     headers: {
@@ -33,9 +33,9 @@ export const loader = async () => {
   };
 
   try {
-    const response = await axios.get(`http:localhost:8080/tasks`, config);
+    const response = await axios.get(`http://localhost:8080/tasks`, config);
 
-    if (!response.ok) {
+    if (response.status !== 200) {
       throw json({ message: "internal error" }, { status: 500 });
     }
     return response.data;
