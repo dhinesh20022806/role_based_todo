@@ -46,7 +46,7 @@ export async function action({ request, params }) {
     console.log(decode);
 
     if (
-      decode.role === "users" ||
+      decode.role === "user" ||
       decode.role === "admin" ||
       decode.role === "manager"
     ) {

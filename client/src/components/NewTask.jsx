@@ -4,7 +4,7 @@ import InputElement from "./InputElement";
 
 const NewTask = ({ assignTask, userData }) => {
   return (
-    <Form className="bg-purple p-ten">
+    <Form method="post" className="bg-purple p-ten">
       <InputElement type="text" label="Enter new Title" name="title" required />
       <InputElement
         textarea
@@ -13,7 +13,7 @@ const NewTask = ({ assignTask, userData }) => {
         required
       />
       {assignTask && (
-        <select defaultValue={"selet the username"}>
+        <select defaultValue={"select the username"}>
           <option value={"selet the username"}>Select usernaem</option>
           {userData.map((user) => {
             return (

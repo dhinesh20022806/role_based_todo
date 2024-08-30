@@ -3,9 +3,11 @@ const pool = require("../dbConfig");
 exports.modelGetAllTask = async (username) => {
   try {
     const rows = await pool.query(
-      "SELECT * FROM tasks WHERE assiged_user = ? ",
+      "SELECT * FROM tasks WHERE assigned_user = ? ",
       [username]
     );
+
+    console.log(rows);
 
     return rows[0];
   } catch (error) {

@@ -8,6 +8,7 @@ p.container > * {
   color: var(--off-white);
 }
 
-p.container > input {
+p.container > input,
+p.container > textarea {
   color: var(--matta-black);
 }

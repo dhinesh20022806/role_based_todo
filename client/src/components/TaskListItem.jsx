@@ -1,7 +1,9 @@
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link, redirect } from "react-router-dom";
+import { useState, useEffect } from "react";
 import UpdataTask from "./UpdataTask";
 import SingleTask from "./SingleTask";
+import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 const TaskListItem = ({ data }) => {
   const [isEdit, setIsEdit] = useState(false);
@@ -18,17 +20,40 @@ const TaskListItem = ({ data }) => {
     }
     setIsView((prev) => !prev);
   };
+
+  const handleDeleteTask = async (id) => {
+    try {
+      const token = JSON.parse(localStorage.getItem("jwt_token"));
+
+      const decode = jwtDecode(token);
+
+      console.log(token);
+
+      let config = {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      };
+
+      const response = await axios.delete(
+        "http://localhost:8080/tasks/" + id,
+        config
+      );
+
+      return redirect(`/${decode.role}`);
+
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <li key={data.id} className="mb-five ">
-      <span className="flex justify-content-between">
-        <Link
-          to={`tasks/${data.id}`}
-          className="flex gap-five align-items-center"
-        >
-          <h1 className="text-black">{data.title}</h1>
-          <p className="task-in-progress">{data.status}</p>
-        </Link>
-        <button onClick={toggleIsEdit}>
+      <span className="flex justify-content-between taskList ">
+        <h1 className="text-black flex-one ">{data.title}</h1>
+        <p className={`task-${data.status} flex-one p-ten `}>{data.status}</p>
+
+        <button onClick={toggleIsEdit} className="btn-outline-none">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -44,7 +69,7 @@ const TaskListItem = ({ data }) => {
             />
           </svg>
         </button>
-        <button onClick={toggleIsView}>
+        <button onClick={toggleIsView} className="btn-outline-none">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -65,7 +90,10 @@ const TaskListItem = ({ data }) => {
             />
           </svg>
         </button>
-        <button>
+        <button
+          onClick={() => handleDeleteTask(data.id)}
+          className="btn-outline-none"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -82,8 +110,8 @@ const TaskListItem = ({ data }) => {
           </svg>
         </button>
       </span>
-      {isEdit && <UpdataTask />}
-      {isView && <SingleTask />}
+      {isEdit && <UpdataTask data={data} />}
+      {isView && <SingleTask description={data.description} />}
     </li>
   );
 };

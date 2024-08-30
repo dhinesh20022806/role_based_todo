@@ -3,8 +3,12 @@ import SideBar from "../components/SideBar";
 import ProfileButton from "../components/ProfileButton";
 import NewTask from "../components/NewTask";
 import ListTasks from "../components/ListTasks";
+import axios from "axios";
+import { json, useLoaderData } from "react-router-dom";
 
 const manager = () => {
+  const data = useLoaderData();
+  console.log(data);
   return (
     <section>
       <div className="grid-new-task">
@@ -18,3 +22,24 @@ const manager = () => {
 };
 
 export default manager;
+
+export const loader = async () => {
+  const token = JSON.parse(localStorage.getItem("token"));
+
+  let config = {
+    headers: {
+      authorization: `Bearere ${token}`,
+    },
+  };
+
+  try {
+    const response = await axios.get(`http:localhost:8080/tasks`, config);
+
+    if (!response.ok) {
+      throw json({ message: "internal error" }, { status: 500 });
+    }
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

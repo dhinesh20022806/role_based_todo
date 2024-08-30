@@ -6,6 +6,12 @@ import NonUserRootLayout from "./pages/NonUserRootLayout";
 import AssignTask from "./components/AssignTask";
 import Profile from "./components/Profile";
 import ManageUsers from "./components/ManageUsers";
+import { loader as TaskLoader, action as createTask } from "./pages/Users";
+import { loader as ManagerTaskLoader } from "./pages/Manager";
+import {
+  loader as AdminTaskLoader,
+  action as AdminCreateTask,
+} from "./pages/Admin";
 
 const router = createBrowserRouter([
   {
@@ -23,12 +29,14 @@ const router = createBrowserRouter([
     element: <h1>unauthorized</h1>,
   },
   {
-    path: "/users",
+    path: "/user",
     element: <UserRootLayout />,
     children: [
       {
         index: true,
         element: <Users />,
+        loader: TaskLoader,
+        action: createTask,
       },
       {
         path: "profile",
@@ -44,6 +52,7 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Manager />,
+        loader: ManagerTaskLoader,
       },
       {
         path: "profile",
@@ -62,6 +71,8 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Admin />,
+        loader: AdminTaskLoader,
+        action: AdminCreateTask,
       },
       {
         path: "profile",

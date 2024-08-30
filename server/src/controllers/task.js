@@ -10,17 +10,24 @@ const {
 
 exports.getAllTask = async (req, res) => {
   const token = req.headers.authorization.split(" ")[1];
+  console.log(token);
 
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
   const username = decoded.username;
 
+  console.log(username);
+
   const user_tasks = await modelGetAllTask(username);
 
-  if (user_tasks.length > 0 && user_tasks[0].length > 0) {
-    res.status(200).json(user_tasks[0]);
+  console.log(user_tasks, "final");
+
+  console.log(user_tasks.length);
+
+  if (user_tasks.length >= 0) {
+    res.status(200).json(user_tasks);
   } else {
-    res.status(400).json({
+    res.status(405).json({
       error: user_tasks.message,
     });
   }
@@ -100,7 +107,7 @@ exports.updateTask = async (req, res) => {
   const newTask = await modelUpdateTask(title, description, status, taskid);
 
   if (newTask.length > 0 && newTask[0].length > 0) {
-    res.status(201).json({
+    res.status(200).json({
       status: "success",
       data: {
         rows: newTask[0],

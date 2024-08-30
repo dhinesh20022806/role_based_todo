@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const SingleTask = () => {
+const SingleTask = ({ description }) => {
   return (
     <section>
-      <p>Description</p>
+      <p>{description}</p>
     </section>
   );
 };

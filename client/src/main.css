@@ -151,12 +151,12 @@
 }
 
 /* Task Status Indicators */
-.task-pending {
+.task-todo {
   background-color: #f0ad4e; /* Amber */
   color: white;
 }
 
-.task-in-progress {
+.task-inprogress {
   background-color: #0275d8; /* Blue */
   color: white;
 }
@@ -297,4 +297,16 @@ li {
 .btn {
   padding: 5px;
   border-radius: 10px;
+}
+.btn-outline-none {
+  outline: none;
+  border: none;
+  background-color: transparent;
+}
+span.taskList > * {
+  flex: 1;
+}
+
+.flex-one {
+  flex: 1;
 }

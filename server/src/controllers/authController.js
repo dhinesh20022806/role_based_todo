@@ -22,7 +22,7 @@ const loginJWTUser = (username, userRole) => {
   // Authenticate user (details omitted)
 
   const user = { username, role: userRole }; // Assuming you get this from your DB
-  const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "1h" });
+  const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "1d" });
 
   return token;
 };
