@@ -18,39 +18,36 @@ const {
   updateManager,
   updateUserByManager,
 } = require("../controllers/user");
-const { authenticateJWT } = require("../controllers/authController");
 const validateAdmin = require("../controllers/validAdmin");
+const { authenticateJWT } = require("./../util/authMiddleware");
 const validateManager = require("../controllers/validManager");
 
 const router = express.Router();
 
 router.post("/register", registerUser);
 router.post("/login", loginUser);
+router.use(authenticateJWT);
+router.get("/admins", validateAdmin, getAllAdmin);
 
-router
-  .route("/:userid")
-  .get(authenticateJWT, getUser)
-  .put(authenticateJWT, updateUser)
-  .delete(authenticateJWT, deleteUser);
+router.route("/admins/update/users").put(validateAdmin, updateUserByAdmin);
+router.route("/admins/update/manager").put(validateAdmin, updateManagerByAdmin);
+router.get("/managers", getAllManager);
 
-router.get("/", authenticateJWT, validateAdmin, getAllUser);
-router
-  .get("/admins", authenticateJWT, validateAdmin, getAllAdmin)
-  .put(authenticateJWT, validateAdmin, updateUserByAdmin)
-  .put(authenticateJWT, validateAdmin, updateManagerByAdmin);
+router.get("/", validateAdmin, getAllUser);
 
 router
   .route("/admins/:adminid")
-  .get(authenticateJWT, validateAdmin, getAdmin)
-  .put(authenticateJWT, validateAdmin, updateAdmin)
-  .delete(authenticateJWT, validateAdmin, deleteAdmin);
+  .get(validateAdmin, getAdmin)
+  .put(validateAdmin, updateAdmin)
+  .delete(validateAdmin, deleteAdmin);
 
-router.get("/managers", getAllManager);
 router
   .route("/managers/:managerid")
-  .get(authenticateJWT, validateManager, getManager)
-  .put(authenticateJWT, validateManager, updateManager)
-  .delete(authenticateJWT, validateManager, deleteManager)
-  .put(authenticateJWT, validateManager, updateUserByManager);
+  .get(validateManager, getManager)
+  .put(validateManager, updateManager)
+  .delete(validateManager, deleteManager)
+  .put(validateManager, updateUserByManager);
+
+router.route("/:userid").get(getUser).put(updateUser).delete(deleteUser);
 
 module.exports = router;

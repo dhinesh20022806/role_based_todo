@@ -18,6 +18,7 @@ exports.modelLogin = async (username) => {
     const rows = await pool.query("SELECT * FROM users WHERE username = ?", [
       username,
     ]);
+    console.log(rows);
     return rows[0];
   } catch (error) {
     console.log(error);
@@ -204,6 +205,7 @@ exports.modelUserByManager = async (manager_id, username, is_active) => {
 };
 
 exports.modelUserByAdmin = async (username, role) => {
+  console.log(username, role);
   try {
     const rows = await pool.query(
       "UPDATE users SET role = ? WHERE   username = ?",

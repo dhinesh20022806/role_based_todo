@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-const authenticateJWT = (req, res, next) => {
+exports.authenticateJWT = (req, res, next) => {
   console.log("fired...");
   console.log(req);
   const token = req.headers["authorization"]?.split(" ")[1];
@@ -18,14 +18,10 @@ const authenticateJWT = (req, res, next) => {
   });
 };
 
-const loginJWTUser = (username, userRole, id) => {
-  // Authenticate user (details omitted)
-
-  const user = { username, role: userRole, id }; // Assuming you get this from your DB
+exports.loginJWTUser = (username, userRole, id) => {
+  const user = { username, role: userRole, id };
   console.log(user);
   const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "1d" });
 
   return token;
 };
-
-module.exports = { authenticateJWT, loginJWTUser };

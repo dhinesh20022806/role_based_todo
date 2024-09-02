@@ -48,8 +48,9 @@ app.use(logger("dev"));
 // Routers
 app.use("/users", userRouter);
 app.use("/tasks", taskRouter);
+
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
 
-module.exports = app;
+module.exports = { app };
